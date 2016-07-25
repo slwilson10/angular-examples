@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!-- Big Picture Diagram:
+Module
+    |
+Config
+    |
+Routes
+    |- View
+    |    |
+    |   - Directives
+    |
+    |- Controller
+         |
+        - Factory
+        - Services
+-->
+
+<!-- DIRECTIVE -->
+<html ng-app='demoApp'>
+<head>
+    <title>This is an Angular Tutorial</title>
+</head>
+<body>
+<!-- Example of data binding with ng-model and data binding -->
+<!--    
+    <div class='container'>
+            Name: 
+        <br />
+        <input type='text' ng-model='name' /> {{ name }}
+    </div>
+-->
+
+<!-- Example of iteration with ng-repeat and initial data -->
+<!--
+    <div class='container'
+        ng-init="names=['Dave', 'Steve', 'Bob', 'Micheal']">
+        <h3>Loop:</h3>
+        <br />
+        <ul>
+            <li ng-repeat='name in names'>{{ name }}</li>
+        </ul>
+    
+    </div>
+-->
+<!-- Example of using filters -->
+<!--
+    <div class='container' ng-init="customers=[{name:'John Smith', city:'Phoenix'}, 
+                                                {name:'Dave Barry', city:'Buffalo'}, 
+                                                {name:'Susan Kerry', city:'Florida'}]">
+        <h3>Filter:</h3>
+        <br />
+        <input type='text' ng-model='name' />
+        <br />
+        <ul>
+            <li ng-repeat='cust in customers | filter:name | orderBy:"city"'>
+                {{ cust.name | lowercase }} - {{ cust.city | uppercase }}
+            </li>
+        </ul>
+    </div>
+-->
+<!-- Example using scope, controllers, and modules -->
+<!--
+    <div ng-controller='SimpleController'>
+        <h3>Scope:</h3>
+        <br />
+        <input type='text' ng-model='name' />
+        <br />
+        <ul>
+            <li ng-repeat='cust in customers | filter:name | orderBy:"city"'>
+                {{ cust.name | lowercase }} - {{ cust.city | uppercase }}
+            </li>
+        </ul>
+    </div>
+    
+    <script src='angular.min.js'></script>
+
+    <script>
+        var demoApp = angular.module('demoApp', []);
+
+        function SimpleController($scope){
+            $scope.customers=[{name:'John Smith', city:'Phoenix'},
+                            {name:'John Doe', city:'New York'},
+                            {name:'Jane Doe', city:'San Fransisco'}
+            ];
+        }
+        demoApp.controller('SimpleController', SimpleController);
+        
+    </script>
+-->
+
+<!-- Example using scope, controllers, modules, views, and routes -->
+<!--
+    <div ng-view></div>
+    <script src='./node_modules/angular/angular.min.js'></script>
+    <script src="./node_modules/angular-route/angular-route.js"></script> 
+    <script>
+        var demoApp = angular.module('demoApp', ['ngRoute']);
+        demoApp.config(function($routeProvider){
+            $routeProvider
+                .when('/',
+                    {
+                        controller: 'SimpleController',
+                        templateUrl: 'templates/view1.html'
+                    })
+                .when('/view2',
+                    {
+                        controller: 'SimpleController',
+                        templateUrl: 'templates/view2.html'
+                    })
+                .otherwise({ redirectTo: '/'});
+        });
+        
+        demoApp.controller('SimpleController', function SimpleController($scope){
+            $scope.customers=[{name:'John Smith', city:'Phoenix'},
+                            {name:'John Doe', city:'New York'},
+                            {name:'Jane Doe', city:'San Fransisco'}
+            ];
+
+            $scope.addCustomer = function() {
+                $scope.customers.push({
+                    name: $scope.newCustomer.name, city: $scope.newCustomer.city});
+            };
+        
+        }); 
+    </script>
+-->
+
+<!-- Example using scope, controllers, modules, views, routes, and factories -->
+
+    <div ng-view></div>
+    
+    <script src='./node_modules/angular/angular.min.js'></script>
+    <script src="./node_modules/angular-route/angular-route.js"></script> 
+    <script>
+        var demoApp = angular.module('demoApp', ['ngRoute'])
+        demoApp.config(function($routeProvider){
+            $routeProvider
+                .when('/',
+                    {
+                        controller: 'SimpleController',
+                        templateUrl: 'templates/view1.html'
+                    })
+                .when('/view2',
+                    {
+                        controller: 'SimpleController',
+                        templateUrl: 'templates/view2.html'
+                    })
+                .otherwise({ redirectTo: '/'});
+        });
+        
+        demoApp.factory('simpleFactory', function(){
+            var factory = {};
+            var customers = [
+                {name: 'John Smith', city: 'New York'},
+                {name: 'John Doe', city: 'Maine'},
+                {name: 'Jane Doe', city: 'Boston'},               
+            ];
+            
+            factory.getCustomers = function(){
+                return customers;
+            };
+            factory.postCustomers = function(customer){
+            
+            };
+
+            return factory;
+        });
+
+        demoApp.controller('SimpleController', function ($scope, simpleFactory){
+            $scope.customers= simpleFactory.getCustomers();
+
+            $scope.addCustomer = function() {
+                $scope.customers.push({
+                    name: $scope.newCustomer.name, city: $scope.newCustomer.city});
+            };
+        
+        }); 
+    </script>
+<!--
+    <script src='angular.min.js'></script>
+-->
+</body>
+</html>
